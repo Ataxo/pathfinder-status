@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Status : Pathfinder</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="bootstrap.css">
+  <link rel="stylesheet" href="bootstrap-extra.css">
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <style>
+    body    { background-color: #fafafa; }
+    a#app   { color: #c0c0c0; text-decoration: underline; position: absolute; top: 3.5em; left: 0.2em; }
+    a#app:hover { color: #999; }
+    header.jumbotron { position: relative; }
+    header.jumbotron h1 { font-size: 48px; margin: 1em 0 1.25em 0; }
+    h1       { color: #999; text-shadow: #999 0 1px 1px; }
+    .up   h1 { color: #27d05f; }
+    .down h1 { color: #d01b35; }
+    .error h1   { color: #efbb08; }
+    .unknown h1 { color: #666; }
+    #chart { background-color: #fff; padding: 1em;  border-radius: 0.5em; box-shadow: #eeeeee 0 1px 2px; }
+  </style>
+</head>
+<body>
+
+
+  <div class="container">
+    <header class="jumbotron">
+    <h1>Pathfinder : <span id="status">Unknown</span></h1>
+    <a id="app" href="https://pathfinder.ataxo.com">https://pathfinder.ataxo.com</a>
+
+    <section class="chart">
+      <iframe src="https://rpm.newrelic.com/public/charts/kHJmN5oMvjy" width="800" height="250" scrolling="no" frameborder="no"></iframe>
+    </section>
+
+    <section class="chart">
+      <iframe src="https://rpm.newrelic.com/public/charts/jEWL9rLORr8" width="800" height="250" scrolling="no" frameborder="no"></iframe>
+    </section>
+
+    </header>
+  </div>
+
+  <script>
+  String.prototype.capitalize = function() { return this.charAt(0).toUpperCase() + this.slice(1); }
+
+  var status = 'unknown';
+
+  $.get('https://pathfinder.ataxo.com/is_alive', function(data) {
+    console.log(data)
+    switch (data.status) {
+      case 'ok':
+        status = 'up';
+        break;
+      case 'error':
+        status = 'error';
+        break;
+    };
+  }, 'json')
+
+  .error(function() {
+    status = 'down'
+  })
+
+  .complete(function() {
+    $('body')
+      .addClass( status )
+      .find('#status')
+      .text(status.capitalize());
+  });
+  </script>
+</body>
+</html>
