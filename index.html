@@ -44,24 +44,24 @@
   
   $(document).ready(function(){
   String.prototype.capitalize = function() { return this.charAt(0).toUpperCase() + this.slice(1); }
-
-  var status = 'unknown';
-
-  $.get('https://pathfinder.ataxo.com/is_alive', function(data) {
-    console.log(data);
-    status = data.status;
-  }, 'json')
-
-  .error(function() {
-    status = 'down'
-  })
-
-  .complete(function() {
+  
+  function set_status(status) {
     $('body')
       .addClass( status )
       .find('#status')
       .text(status.capitalize());
-  });
+  }
+  var status = 'unknown';
+
+  $.get('https://pathfinder.ataxo.com/is_alive', function(data) {
+    console.log(data);
+    set_status(data.status)
+  }, 'json')
+
+  .error(function() {
+    set_status('down')
+  })
+
   });
   </script>
 </body>
