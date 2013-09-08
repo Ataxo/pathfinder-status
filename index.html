@@ -15,7 +15,8 @@
     h1       { color: #999; text-shadow: #999 0 1px 1px; }
     .up   h1 { color: #27d05f; }
     .down h1 { color: #d01b35; }
-    .error h1   { color: #efbb08; }
+    .partial h1 { color: #efbb08;}
+    .error h1   { color: #d01b35; }
     .unknown h1 { color: #666; }
     #chart { background-color: #fff; padding: 1em;  border-radius: 0.5em; box-shadow: #eeeeee 0 1px 2px; }
   </style>
@@ -46,14 +47,7 @@
 
   $.get('https://pathfinder.ataxo.com/is_alive', function(data) {
     console.log(data)
-    switch (data.status) {
-      case 'ok':
-        status = 'up';
-        break;
-      case 'error':
-        status = 'error';
-        break;
-    };
+    status = data.status;
   }, 'json')
 
   .error(function() {
